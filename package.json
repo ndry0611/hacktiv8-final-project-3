@@ -1,0 +1,27 @@
+{
+  "name": "project_3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:db:create": "npx sequelize db:create",
+    "dev:db:migrate": "npx sequelize db:migrate",
+    "dev:db:seed": "npx sequelize db:seed:all",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "sequelize-cli": "^6.5.1"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.8.0",
+    "sequelize": "^6.25.3"
+  }
+}
