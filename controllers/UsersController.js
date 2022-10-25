@@ -7,6 +7,7 @@ class UsersController {
         const { full_name, password, gender, email } = req.body;
         const inputData = {
             full_name,
+            email,
             password,
             gender,
             createdAt: new Date(),
