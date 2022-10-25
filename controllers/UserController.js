@@ -1,8 +1,8 @@
-const { Users } = require('../models');
+const { User } = require('../models');
 const { comparePassword } = require('../helpers/bcrypt');
 const { generateToken } = require('../helpers/jwt');
 
-class UsersController {
+class UserController {
     static async createUser(req, res) {
         const { full_name, password, gender, email } = req.body;
         const inputData = {
@@ -14,7 +14,7 @@ class UsersController {
             updatedAt: new Date()
         };
         try {
-            let result = await Users.create(inputData);
+            let result = await User.create(inputData);
             let response = {
                 id: result.id,
                 full_name: result.full_name,
@@ -25,14 +25,21 @@ class UsersController {
             }
             res.status(201).json({ user: response });
         } catch (error) {
-            res.status(500).json(error.message);
+            if (error.name === 'SequelizeValidationError') {
+                const errValidation = {};
+                error.errors.map((er) => {
+                    errValidation[er.path] = er.message;
+                });
+                return res.status(400).json(errValidation);
+            }
+            return res.status(500).json({ message: error.message });
         }
     }
 
     static async login(req, res) {
         const { email, password } = req.body;
         try {
-            const user = await Users.findOne({ where: { email } });
+            const user = await User.findOne({ where: { email } });
             if (!user) {
                 return res.status(404).json({
                     name: 'User login error',
@@ -53,7 +60,7 @@ class UsersController {
             const token = generateToken(payload);
             return res.status(201).json({ token });
         } catch (error) {
-            return res.status(500).json(error.message);
+            return res.status(500).json({ message: error.message });
         }
     }
 
@@ -61,17 +68,17 @@ class UsersController {
         let id = +req.params.userId;
         const { full_name, email } = req.body;
         const data = {
-            full_name,
-            email,
+            full_name: full_name,
+            email: email,
             updatedAt: new Date()
         };
         try {
-            const result = await Users.update(data, {
+            const result = await User.update(data, {
                 where: { id },
                 returning: true,
                 individualHooks: true
             });
-            let response = result[1].dataValues;
+            let response = result[1][0].dataValues;
             let obj = {
                 id: response.id,
                 full_name: response.full_name,
@@ -81,21 +88,53 @@ class UsersController {
             }
             return res.status(200).json({ user: obj });
         } catch (error) {
-            return res.status(500).json(error.message);
+            if (error.name === 'SequelizeValidationError') {
+                const errValidation = {};
+                error.errors.map((er) => {
+                  errValidation[er.path] = er.message;
+                });
+                return res.status(400).json(errValidation);
+            }
+            return res.status(500).json({ message: error.message });
+        }
+    }
+
+    static async topupUser(req, res) {
+        const { balance } = req.body;
+        try {
+            const user = await User.findOne({where: {id: res.locals.user.id}})
+            user.balance += parseInt(balance);
+            await user.save();
+            return res.status(200).json({ message: `Your balance has been successfully updated to Rp ${user.balance}` });
+        } catch (error) {
+            if (error.name === 'SequelizeValidationError') {
+                const errValidation = {};
+                error.errors.map((er) => {
+                  errValidation[er.path] = er.message;
+                });
+                return res.status(400).json(errValidation);
+            }
+            return res.status(500).json({ message: error.message });
         }
     }
 
     static async deleteUser(req, res) {
         let id = +req.params.userId;
         try {
-
-            const result = await Users.destroy({ where: { id } });
+            const result = await User.destroy({ where: { id } });
             return res.status(200).json({ message: 'Your account has successfully deleted' });
 
         } catch (error) {
-            return res.status(500).json(error.message);
+            if (error.name === 'SequelizeValidationError') {
+                const errValidation = {};
+                error.errors.map((er) => {
+                  errValidation[er.path] = er.message;
+                });
+                return res.status(400).json(errValidation);
+            }
+            return res.status(500).json({ message: error.message });
         }
     }
 }
 
-module.exports = UsersController;
+module.exports = UserController;

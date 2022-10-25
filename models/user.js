@@ -1,6 +1,6 @@
 'use strict';
 
-const { hashPassword } = require('../helper/bcrypt');
+const { hashPassword } = require('../helpers/bcrypt');
 
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
@@ -18,14 +18,23 @@ module.exports = (sequelize, DataTypes) => {
     full_name: {
       type: DataTypes.STRING,
       validate: {
-        notEmpty: true
+        notEmpty: {
+          args: true,
+          msg: "Fullname cannot be empty"
+        }
       }
     },
     email: {
       type: DataTypes.STRING,
       validate: {
-        isEmail: true,
-        notEmpty: true
+        isEmail: {
+          args: true,
+          msg: 'Entered a wrong email format!'
+        },
+        notEmpty: {
+          args: true,
+          msg: 'Email cannot be empty!'
+        }
       },
       unique: {
         args: true,
@@ -68,12 +77,12 @@ module.exports = (sequelize, DataTypes) => {
         isNumeric: true,
         notEmpty: true,
         min: {
-          args: 0,
-          msg: "Balance cannot be below 0"
+          args: [0],
+          msg: 'Balance cannot below 0'
         },
         max: {
-          args: 100000000,
-          msg: "Max balance is 100000000"
+          args: [100000000],
+          msg: 'Max balance is 100000000'
         }
       }
     }
