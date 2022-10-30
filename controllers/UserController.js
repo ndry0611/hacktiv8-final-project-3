@@ -104,6 +104,7 @@ class UserController {
         try {
             const user = await User.findOne({where: {id: res.locals.user.id}})
             user.balance += parseInt(balance);
+            user.updatedAt = new Date();
             await user.save();
             return res.status(200).json({ message: `Your balance has been successfully updated to Rp ${user.balance}` });
         } catch (error) {
