@@ -23,7 +23,7 @@ class UserController {
                 balance: new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(result.balance),
                 createdAt: result.createdAt
             }
-            res.status(201).json({ user: response });
+            return res.status(201).json({ user: response });
         } catch (error) {
             if (error.name === 'SequelizeValidationError') {
                 const errValidation = {};
