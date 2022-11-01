@@ -17,7 +17,13 @@ module.exports = (sequelize, DataTypes) => {
   }
   Product.init({
     CategoryId: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Category Id cannot be null"
+        }
+      }
     },
     title: {
       type: DataTypes.STRING,
