@@ -12,7 +12,7 @@ class CategoryController {
 
     static async createCategory(req, res) {
         const { type } = req.body;
-        inputData = {
+        let inputData = {
             type,
             createdAt: new Date(),
             updatedAt: new Date()
@@ -42,7 +42,7 @@ class CategoryController {
     static async updateCategory(req, res) {
         let id = +req.params.categoryId;
         const { type } = req.body;
-        inputData = {
+        let inputData = {
             type,
             updatedAt: new Date()
         };
