@@ -17,23 +17,51 @@ module.exports = (sequelize, DataTypes) => {
   }
   Transactionhistory.init({
     ProductId: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Product Id cannot be empty"
+        }
+      }
     },
     UserId: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "User Id cannot be empty"
+        }
+      }
     },
     quantity: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       validate: {
-        notEmpty: true,
-        isNumeric: true
+        notEmpty: {
+          args: true,
+          msg: 'Quantity cannot be empty!'
+        },
+        isNumeric: {
+          args: true,
+          msg: 'Quantity must be a number'
+        },
       }
     },
     total_price: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       validate: {
-        notEmpty: true,
-        isNumeric: true
+        notEmpty: {
+          args: true,
+          msg: 'Total cannot be empty!'
+        },
+        isNumeric: {
+          args: true,
+          msg: 'Total must be a number'
+        },
       }
     }
   }, {

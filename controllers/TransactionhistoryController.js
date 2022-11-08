@@ -2,15 +2,15 @@ const { Transactionhistory, Product, User, Category } = require('../models');
 
 class TransactionhistoryController {
     static async createTransactionhistory(req, res) {
-        const { productId, quantity } = req.body;
+        const { ProductId, quantity } = req.body;
+        const loggedUser = res.locals.user;
         try {
-            let product = await Product.findOne({ where: { id: productId }, include: Category });
-            let user = await User.findOne({ where: { id: res.locals.user.id } });
-
+            let product = await Product.findOne({ where: { id: parseInt(ProductId) }, include: Category });
+            let user = await User.findOne({ where: { id: loggedUser.id } });
             if (!product) {
-                return res.status(404).json({ message: `Product with id: ${productId} not found!` });
+                return res.status(404).json({ message: `Product with id: ${ProductId} not found!` });
             }
-            if (product.stock < quantity) {
+            if (product.stock < parseInt(quantity)) {
                 return res.status(422).json({ message: `Insufficient product quantity ! Stock: ${product.stock} ; Requested Quantity : ${quantity}` });
             }
             let totalPrice = product.price * parseInt(quantity);
@@ -34,8 +34,8 @@ class TransactionhistoryController {
             await user.save();
 
             const inputData = {
-                ProductId: productId,
-                quantity: quantity,
+                ProductId: parseInt(ProductId),
+                quantity: parseInt(quantity),
                 UserId: res.locals.user.id,
                 total_price: totalPrice
             };
