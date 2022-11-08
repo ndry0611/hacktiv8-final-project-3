@@ -6,6 +6,19 @@ const {
 } = require('../models');
 
 class Authorization {
+
+  static async isAdmin(req, res, next) {
+    const authenticatedUser = res.locals.user;
+    if (authenticatedUser.role !== 0) {
+      return res.status(403).json({
+        name: 'Authorization Error',
+        message: `User With id ${authenticatedUser.id} does not have permission`,
+      });
+    } else {
+      return next();
+    }
+  }
+
   static async User(req, res, next) {
     const userId = +req.params.userId;
 
@@ -40,18 +53,19 @@ class Authorization {
     const categoryId = +req.params.categoryId;
     const authenticatedUser = res.locals.user;
 
+    if (authenticatedUser.role !== 0) {
+      return res.status(403).json({
+        name: 'Authorization Error',
+        message: `User With id ${authenticatedUser.id} does not have permission`,
+      });
+    } 
+
     try {
       const category = await Category.findOne({
         where: {
           id: categoryId,
         },
       });
-      if (authenticatedUser.role !== 0) {
-        return res.status(403).json({
-          name: 'Authorization Error',
-          message: `User With id ${authenticatedUser.id} does not have permission`,
-        });
-      }
       if (!category) {
         return res.status(404).json({
           name: 'Data Not Found',
@@ -69,20 +83,19 @@ class Authorization {
     const productId = +req.params.productId;
     const authenticatedUser = res.locals.user;
 
+    if (authenticatedUser.role !== 0) {
+      return res.status(403).json({
+        name: 'Authorization Error',
+        message: `User With id ${authenticatedUser.id} does not have permission`,
+      });
+    }
+
     try {
       const product = await Product.findOne({
         where: {
           id: productId,
         },
       });
-
-      if (authenticatedUser.role !== 0) {
-        return res.status(403).json({
-          name: 'Authorization Error',
-          message: `User With id ${authenticatedUser.id} does not have permission`,
-        });
-      }
-
       if (!product) {
         return res.status(404).json({
           name: 'Data Not Found',
@@ -93,18 +106,6 @@ class Authorization {
       }
     } catch (err) {
       return res.status(500).json(err.message);
-    }
-  }
-
-  static async TransactionsAdmin(req, res, next) {
-    const authenticatedUser = res.locals.user;
-    if (authenticatedUser.role !== 0) {
-      return res.status(403).json({
-        name: 'Authorization Error',
-        message: `User With id ${authenticatedUser.id} does not have permission`,
-      });
-    } else {
-      return next();
     }
   }
 
@@ -119,7 +120,7 @@ class Authorization {
         },
       });
 
-      if (authenticatedUser.id !== transaction.UserId) {
+      if (authenticatedUser.id !== transaction.UserId && authenticatedUser.role !== 0) {
         return res.status(403).json({
           name: 'Authorization Error',
           message: `User With id ${authenticatedUser.id} does not have permission`,

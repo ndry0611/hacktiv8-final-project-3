@@ -16,6 +16,7 @@ const authentication = async (req, res, next) => {
             where: {
                 id: userDecoded.id,
                 email: userDecoded.email,
+                role: userDecoded.role
             },
         });
         if (!user) {
