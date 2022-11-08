@@ -25,7 +25,7 @@ class ProductController {
             let response = {
                 id: result.id,
                 title: result.title,
-                price: new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(result.price),
+                price: result.price,
                 stock: result.stock,
                 CategoryId: result.CategoryId,
                 updatedAt: result.updatedAt,
@@ -94,7 +94,7 @@ class ProductController {
             let obj = {
                 id: product.id,
                 title: product.title,
-                price: new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(product.price),
+                price: product.price,
                 stock: product.stock,
                 CategoryId: product.CategoryId,
                 updatedAt: product.updatedAt,

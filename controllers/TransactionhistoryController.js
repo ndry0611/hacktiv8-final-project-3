@@ -61,7 +61,7 @@ class TransactionhistoryController {
 
     static async getUserTransaction(req, res) {
         try {
-            let result = await Transactionhistory.findAll({ where: { UserId: res.locals.user.id }, include: Product });
+            let result = await Transactionhistory.findAll({ where: { UserId: res.locals.user.id }, include: {model: Product, attributes: ['id', 'title', 'price', 'stock', 'CategoryId']} });
             return res.status(200).json({ transactionHistories: result });
         } catch (error) {
             if (error.name === 'SequelizeValidationError') {
@@ -77,7 +77,9 @@ class TransactionhistoryController {
 
     static async getAdminTransaction(req, res) {
         try {
-            let result = await Transactionhistory.findAll({ include: [Product, User] });
+            let result = await Transactionhistory.findAll({ include: [
+                {model: Product, attributes: ['id', 'title', 'price', 'stock', 'CategoryId']}, 
+                { model: User, attributes: ['id', 'email', 'balance', 'gender', 'role'] }] });
             return res.status(200).json({ transactionHistories: result });
         } catch (error) {
             if (error.name === 'SequelizeValidationError') {
@@ -94,8 +96,8 @@ class TransactionhistoryController {
     static async getTransactionById(req, res) {
         const id = +req.params.transactionId;
         try {
-            let result = await Transactionhistory.findOne({ where: { id }, include: Product });
-            return res.status(200).json({ result });
+            let result = await Transactionhistory.findOne({ where: { id }, include: {model: Product, attributes: ['id', 'title', 'price', 'stock', 'CategoryId']} });
+            return res.status(200).json(result);
         } catch (error) {
             if (error.name === 'SequelizeValidationError') {
                 const errValidation = {};

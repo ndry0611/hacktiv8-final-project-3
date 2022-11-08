@@ -112,7 +112,7 @@ class UserController {
             user.balance += parseInt(balance);
             user.updatedAt = new Date();
             await user.save();
-            return res.status(200).json({ message: `Your balance has been successfully updated to Rp ${user.balance}` });
+            return res.status(200).json({ message: `Your balance has been successfully updated to ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(user.balance)}` });
         } catch (error) {
             if (error.name === 'SequelizeValidationError') {
                 const errValidation = {};
