@@ -38,6 +38,11 @@ class UserController {
 
     static async login(req, res) {
         const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(422).json({
+                message: 'Email and Password cannot be empty!'
+            });
+        }
         try {
             const user = await User.findOne({ where: { email } });
             if (!user) {
@@ -55,7 +60,8 @@ class UserController {
             }
             let payload = {
                 id: user.id,
-                email: user.email
+                email: user.email,
+                role: user.role
             };
             const token = generateToken(payload);
             return res.status(201).json({ token });
