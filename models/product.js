@@ -27,32 +27,50 @@ module.exports = (sequelize, DataTypes) => {
     },
     title: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
-        notEmpty: true
+        notEmpty: {
+          args: true,
+          msg: 'Title cannot be empty!'
+        }
       }
     },
     price: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       validate: {
-        notEmpty: true,
-        isNumeric: true,
+        notEmpty: {
+          args: true,
+          msg: 'Price cannot be empty!'
+        },
+        isNumeric: {
+          args: true,
+          msg: 'Price must be a number'
+        },
         min: {
-          args: 0,
+          args: [0],
           msg: "Price cannot be below 0"
         },
         max: {
-          args: 50000000,
+          args: [50000000],
           msg: "Max price is 50000000"
         }
       }
     },
     stock: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       validate: {
-        notEmpty: true,
-        isNumeric: true,
+        notEmpty: {
+          args: true,
+          msg: 'Stocks cannot be empty!'
+        },
+        isNumeric: {
+          args: true,
+          msg: 'Stocks must be a number'
+        },
         min: {
-          args: 5,
+          args: [5],
           msg: "Minimum stock has to be 5"
         }
       }

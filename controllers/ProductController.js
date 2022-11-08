@@ -61,7 +61,16 @@ class ProductController {
                 individualHooks: true
             });
             let response = result[1][0].dataValues;
-            return res.status(200).json({ product: response });
+            let obj = {
+                id: response.id,
+                title: response.title,
+                price: new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(response.price),
+                stock: response.stock,
+                CategoryId: response.CategoryId,
+                updatedAt: response.updatedAt,
+                createdAt: response.createdAt
+            };
+            return res.status(200).json({ product: obj });
         } catch (error) {
             if (error.name === 'SequelizeValidationError') {
                 const errValidation = {};
@@ -79,10 +88,19 @@ class ProductController {
         const { CategoryId } = req.body;
         try {
             const product = await Product.findOne({ where: { id } });
-            product.CategoryId = CategoryId;
+            product.CategoryId = parseInt(CategoryId);
             product.updatedAt = new Date();
             await product.save();
-            return res.status(200).json({ product: product });
+            let obj = {
+                id: product.id,
+                title: product.title,
+                price: new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(product.price),
+                stock: product.stock,
+                CategoryId: product.CategoryId,
+                updatedAt: product.updatedAt,
+                createdAt: product.createdAt
+            };
+            return res.status(200).json({ product: obj });
         } catch (error) {
             if (error.name === 'SequelizeValidationError') {
                 const errValidation = {};
