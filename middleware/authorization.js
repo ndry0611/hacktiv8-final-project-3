@@ -120,17 +120,17 @@ class Authorization {
         },
       });
 
-      if (authenticatedUser.id !== transaction.UserId && authenticatedUser.role !== 0) {
-        return res.status(403).json({
-          name: 'Authorization Error',
-          message: `User With id ${authenticatedUser.id} does not have permission`,
-        });
-      }
-
       if (!transaction) {
         return res.status(404).json({
           name: 'Data Not Found',
           message: `Transaction With id ${transactionId} not found`,
+        });
+      }
+
+      if (authenticatedUser.id !== transaction.UserId && authenticatedUser.role !== 0) {
+        return res.status(403).json({
+          name: 'Authorization Error',
+          message: `User With id ${authenticatedUser.id} does not have permission`,
         });
       } else {
         return next();

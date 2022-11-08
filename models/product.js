@@ -55,7 +55,11 @@ module.exports = (sequelize, DataTypes) => {
           args: [50000000],
           msg: "Max price is 50000000"
         }
-      }
+      },
+      get() {
+        const rawValue = this.getDataValue('price');
+        return rawValue ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(rawValue) : null;
+      },
     },
     stock: {
       type: DataTypes.INTEGER,
