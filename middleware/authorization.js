@@ -19,7 +19,7 @@ class Authorization {
     }
   }
 
-  static async User(req, res, next) {
+  static async user(req, res, next) {
     const userId = +req.params.userId;
 
     const authenticatedUser = res.locals.user;
@@ -49,16 +49,8 @@ class Authorization {
     }
   }
 
-  static async Categories(req, res, next) {
+  static async categories(req, res, next) {
     const categoryId = +req.params.categoryId;
-    const authenticatedUser = res.locals.user;
-
-    if (authenticatedUser.role !== 0) {
-      return res.status(403).json({
-        name: 'Authorization Error',
-        message: `User With id ${authenticatedUser.id} does not have permission`,
-      });
-    } 
 
     try {
       const category = await Category.findOne({
@@ -79,16 +71,8 @@ class Authorization {
     }
   }
 
-  static async Product(req, res, next) {
+  static async product(req, res, next) {
     const productId = +req.params.productId;
-    const authenticatedUser = res.locals.user;
-
-    if (authenticatedUser.role !== 0) {
-      return res.status(403).json({
-        name: 'Authorization Error',
-        message: `User With id ${authenticatedUser.id} does not have permission`,
-      });
-    }
 
     try {
       const product = await Product.findOne({
@@ -109,7 +93,7 @@ class Authorization {
     }
   }
 
-  static async Transactions(req, res, next) {
+  static async transactions(req, res, next) {
     const transactionId = +req.params.transactionId;
     const authenticatedUser = res.locals.user;
 
