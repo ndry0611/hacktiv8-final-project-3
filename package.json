@@ -8,7 +8,7 @@
     "dev:db:create": "npx sequelize db:create",
     "dev:db:migrate": "npx sequelize db:migrate",
     "dev:db:seed": "npx sequelize db:seed:all",
-    "dev": "nodemon app.js"
+    "dev": "node app.js"
   },
   "keywords": [],
   "author": "",
