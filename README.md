@@ -1,6 +1,7 @@
 # Hactiv8 Final Project 3 Kelompok7
 
-## Link Heroku
+## Link Railway
+https://hacktiv8-final-project-3-production.up.railway.app/
 
 
 ## Cara penggunaan
@@ -16,3 +17,11 @@
 ## Notes
 Sesuaikan `config` dengan database postgres device. <br>
 Port dapat disesuaikan di `.env`
+
+## Available seed account:
+```json
+{
+   "email": "admin@gmail.com"
+   "password": "123456"
+}
+```
