@@ -40,8 +40,11 @@ router.delete('/products/:productId', ProductController.deleteProduct);
 
 router.get('/transactions/admin', TransactionhistoryController.getAdminTransaction);
 
-router.get('*', (req,res) => {
-    res.status(404).send({message: 'Route not found'});
+router.use((req, res, next) => {
+    res.status(404).json({
+        status: 404,
+        message: 'Not Found',
+    });
 });
 
 module.exports = router;
