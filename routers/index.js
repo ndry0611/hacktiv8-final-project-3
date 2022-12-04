@@ -7,11 +7,12 @@ const TransactionhistoryController = require('../controllers/TransactionhistoryC
 const authentication = require('../middleware/authentication');
 const Authorization = require('../middleware/authorization');
 
-router.get('*', (req,res) => {
-    res.status(404).send({message: 'Route not found'});
-})
 router.post('/users/register', UserController.createUser);
 router.post('/users/login', UserController.login);
+
+router.get('*', (req,res) => {
+    res.status(404).send({message: 'Route not found'});
+});
 
 router.use(authentication);
 // Only need authentication and specific authorization
