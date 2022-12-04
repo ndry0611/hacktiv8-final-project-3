@@ -10,10 +10,6 @@ const Authorization = require('../middleware/authorization');
 router.post('/users/register', UserController.createUser);
 router.post('/users/login', UserController.login);
 
-router.get('*', (req,res) => {
-    res.status(404).send({message: 'Route not found'});
-});
-
 router.use(authentication);
 // Only need authentication and specific authorization
 router.patch('/users/topup', UserController.topupUser);
@@ -43,5 +39,9 @@ router.patch('/products/:productId', ProductController.changeCategory);
 router.delete('/products/:productId', ProductController.deleteProduct);
 
 router.get('/transactions/admin', TransactionhistoryController.getAdminTransaction);
+
+router.get('*', (req,res) => {
+    res.status(404).send({message: 'Route not found'});
+});
 
 module.exports = router;
