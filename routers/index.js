@@ -20,6 +20,7 @@ router.get('/products', ProductController.getAllProduct);
 
 router.get('/transactions/user', TransactionhistoryController.getUserTransaction);
 router.post('/transactions', TransactionhistoryController.createTransactionhistory);
+router.get('/transactions/admin', Authorization.isAdmin, TransactionhistoryController.getAdminTransaction);
 router.get('/transactions/:transactionId', Authorization.transactions, TransactionhistoryController.getTransactionById);
 
 // Need admin authorization
@@ -37,8 +38,6 @@ router.use('/products/:productId', Authorization.product);
 router.put('/products/:productId', ProductController.updateProduct);
 router.patch('/products/:productId', ProductController.changeCategory);
 router.delete('/products/:productId', ProductController.deleteProduct);
-
-router.get('/transactions/admin', TransactionhistoryController.getAdminTransaction);
 
 router.use((req, res, next) => {
     res.status(404).json({
