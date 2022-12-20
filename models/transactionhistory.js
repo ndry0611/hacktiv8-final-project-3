@@ -62,11 +62,7 @@ module.exports = (sequelize, DataTypes) => {
           args: true,
           msg: 'Total must be a number'
         },
-      },
-      get() {
-        const rawValue = this.getDataValue('total_price');
-        return rawValue ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(rawValue) : null;
-      },
+      }
     }
   }, {
     sequelize,

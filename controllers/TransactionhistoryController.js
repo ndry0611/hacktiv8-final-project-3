@@ -37,12 +37,12 @@ class TransactionhistoryController {
                 ProductId: parseInt(ProductId),
                 quantity: parseInt(quantity),
                 UserId: res.locals.user.id,
-                total_price: totalPrice
+                total_price: parseInt(totalPrice)
             };
 
             let result = await Transactionhistory.create(inputData);
             let response = {
-                total_price: new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(result.total_price),
+                total_price: new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(parseInt(result.total_price)),
                 quantity: parseInt(quantity),
                 product_name: product.title
             };
